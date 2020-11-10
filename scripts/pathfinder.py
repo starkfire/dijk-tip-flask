@@ -69,5 +69,30 @@ class Pathfinder:
         """
         # convert the input parameters to interpretable index
         src, dest = ord(src) - 97, ord(dest) - 97
+        
         # create an array to represent each vertex as a node
         self.create_nodes(src)
+
+        # a variable for tracking the current node
+        current_node = src
+        
+        for vtx in range(self.n_vtx):
+            print("\n==================================\n")
+            print("Current Node: ", chr(current_node + 97))
+
+            for x in range(self.n_vtx):
+                # if unvisited and adjacent
+                if self.vertices[current_node][x] == 1 and self.nodes[x][0] == 0:
+                    print("Checking Distance to Node", chr(x + 97), ":", self.edges[current_node][x])
+
+                    # prefer the shortest distance between the two nodes
+                    distance = self.nodes[current_node][1] + self.edges[current_node][x]
+                    if self.nodes[x][1] > distance:
+                        self.nodes[x][1] = distance
+
+            # mark current node as visited
+            self.nodes[current_node][0] = 1
+            # update current node
+            current_node = self.get_next_node(current_node)
+            if current_node == None:
+                break

@@ -13,6 +13,8 @@ class Pathfinder:
         self.edges = edges
         self.n_vtx = len(vertices)
         self.nodes = []
+        self.source = None
+    
     
     def create_nodes(self, src):
         """
@@ -23,6 +25,7 @@ class Pathfinder:
         for x in range(self.n_vtx):
             self.nodes.append([0, 0]) if x == src else self.nodes.append([0, inf])
         return None
+    
     
     def get_adjacent_nodes(self, node: int):
         """
@@ -36,6 +39,7 @@ class Pathfinder:
                 adjacent_nodes.append(x)
         
         return adjacent_nodes
+    
     
     def get_next_node(self, node: int):
         """
@@ -69,6 +73,7 @@ class Pathfinder:
         
         return adjacent_nodes[0]
     
+    
     def get_other_unvisited_nodes(self):
         """
         Returns the index of the other unvisited nodes
@@ -78,12 +83,16 @@ class Pathfinder:
                 return x
         return None
 
-    def dijkstra(self, src, dest):
+    
+    def dijkstra(self, src):
         """
-        Returns the shortest path from the input source node to destination node
+        Returns the shortest distance from the input source node to the other nodes.
         """
         # convert the input parameters to interpretable index
-        src, dest = ord(src) - 97, ord(dest) - 97
+        src= ord(src) - 97
+
+        # set the source property to the index of the source node
+        self.source = src
         
         # create an array to represent each vertex as a node
         self.create_nodes(src)
@@ -117,6 +126,17 @@ class Pathfinder:
         print("\n==================================\n")
         self.print_final_distances(src)
     
+    
     def print_final_distances(self, src):
+        """
+        Print the distance of the source node to other nodes.
+        """
         for dist in range(len(self.nodes)):
             print("Shortest Distance from", chr(src + 97), "to", chr(dist + 97), "=", self.nodes[dist][1])
+    
+
+    def distance_to_destination(self, dest):
+        """
+        Return the distance of the source node to the destination node.
+        """
+        return self.nodes[ord(dest) - 97][1]

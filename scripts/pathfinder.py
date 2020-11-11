@@ -9,12 +9,12 @@ class Pathfinder:
     """
 
     def __init__(self, vertices, edges, debug=False):
-        self.vertices = vertices
-        self.edges = edges
-        self.n_vtx = len(vertices)
-        self.nodes = []
-        self.source = None
-        self.debug = debug
+        self.vertices = vertices        # vertices
+        self.edges = edges              # edges
+        self.n_vtx = len(vertices)      # number of vertices
+        self.nodes = []                 # array for representing each vertex or node: [visited (1 | 0), distance (int)]
+        self.source = None              # index of the source node
+        self.debug = debug              # if true, this will print messages that may be relevant for identifying certain problems
     
     
     def create_nodes(self, src):

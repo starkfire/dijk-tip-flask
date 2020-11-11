@@ -1,5 +1,4 @@
 import sys
-import adjacency_matrix as matrix
 
 inf = sys.maxsize
 

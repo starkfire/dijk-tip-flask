@@ -8,12 +8,13 @@ class Pathfinder:
     Dijkstra Pathfinder Implementation
     """
 
-    def __init__(self, vertices, edges):
+    def __init__(self, vertices, edges, debug=False):
         self.vertices = vertices
         self.edges = edges
         self.n_vtx = len(vertices)
         self.nodes = []
         self.source = None
+        self.debug = debug
     
     
     def create_nodes(self, src):
@@ -49,12 +50,12 @@ class Pathfinder:
         adjacent_nodes = self.get_adjacent_nodes(node)
 
         # print adjacent nodes
-        print("Adjacent Nodes: ", adjacent_nodes)
+        if self.debug: print("Adjacent Nodes: ", adjacent_nodes)
         
         # it's either our script failed to traverse all nodes or it has reached all nodes
         # either way, issue a warning
         if len(adjacent_nodes) == 0:
-            print("WARNING: End of the Line\n")
+            if self.debug: print("WARNING: End of the Line\n")
             return None
         
         for x in range(len(adjacent_nodes)):
@@ -69,7 +70,7 @@ class Pathfinder:
                 adjacent_nodes.pop(x-1)
         
         # print adjacent nodes
-        print("Nearest Node: ", adjacent_nodes)
+        if self.debug: print("Nearest Node: ", adjacent_nodes)
         
         return adjacent_nodes[0]
     
@@ -79,8 +80,7 @@ class Pathfinder:
         Returns the index of the other unvisited nodes
         """
         for x in range(self.n_vtx):
-            if self.nodes[x][0] == 0:
-                return x
+            if self.nodes[x][0] == 0: return x
         return None
 
     
@@ -101,13 +101,14 @@ class Pathfinder:
         current_node = src
         
         for vtx in range(self.n_vtx):
-            print("\n==================================\n")
-            print("Current Node: ", chr(current_node + 97))
+            if self.debug:
+                print("\n==================================\n")
+                print("Current Node: ", chr(current_node + 97))
 
             for x in range(self.n_vtx):
                 # if unvisited and adjacent
                 if self.vertices[current_node][x] == 1 and self.nodes[x][0] == 0:
-                    print("Checking Distance to Node", chr(x + 97), ":", self.edges[current_node][x])
+                    if self.debug: print("Checking Distance to Node", chr(x + 97), ":", self.edges[current_node][x])
 
                     # prefer the shortest distance between the two nodes
                     distance = self.nodes[current_node][1] + self.edges[current_node][x]
@@ -116,23 +117,24 @@ class Pathfinder:
 
             # mark current node as visited
             self.nodes[current_node][0] = 1
+
             # update current node
             current_node = self.get_next_node(current_node)
             if current_node == None:
-                unvisited_node = self.get_other_unvisited_nodes()
-                current_node = unvisited_node
+                current_node = self.get_other_unvisited_nodes()
         
         # print the final distances
-        print("\n==================================\n")
-        self.print_final_distances(src)
+        if self.debug:
+            print("\n==================================\n")
+            self.print_final_distances()
     
     
-    def print_final_distances(self, src):
+    def print_final_distances(self):
         """
         Print the distance of the source node to other nodes.
         """
         for dist in range(len(self.nodes)):
-            print("Shortest Distance from", chr(src + 97), "to", chr(dist + 97), "=", self.nodes[dist][1])
+            print("Shortest Distance from", chr(self.source + 97), "to", chr(dist + 97), "=", self.nodes[dist][1])
     
 
     def distance_to_destination(self, dest):

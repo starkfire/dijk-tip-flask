@@ -43,6 +43,9 @@ class Pathfinder:
         """
         # get adjacent nodes
         adjacent_nodes = self.get_adjacent_nodes(node)
+
+        # print adjacent nodes
+        print("Adjacent Nodes: ", adjacent_nodes)
         
         # it's either our script failed to traverse all nodes or it has reached all nodes
         # either way, issue a warning
@@ -61,8 +64,20 @@ class Pathfinder:
             if (self.edges[node][adj] <= self.edges[node][other_adj]):
                 adjacent_nodes.pop(x-1)
         
+        # print adjacent nodes
+        print("Nearest Node: ", adjacent_nodes)
+        
         return adjacent_nodes[0]
     
+    def get_other_unvisited_nodes(self):
+        """
+        Returns the index of the other unvisited nodes
+        """
+        for x in range(self.n_vtx):
+            if self.nodes[x][0] == 0:
+                return x
+        return None
+
     def dijkstra(self, src, dest):
         """
         Returns the shortest path from the input source node to destination node
@@ -95,4 +110,5 @@ class Pathfinder:
             # update current node
             current_node = self.get_next_node(current_node)
             if current_node == None:
-                break
+                unvisited_node = self.get_other_unvisited_nodes()
+                current_node = unvisited_node

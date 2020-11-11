@@ -50,7 +50,7 @@ class Pathfinder:
         # it's either our script failed to traverse all nodes or it has reached all nodes
         # either way, issue a warning
         if len(adjacent_nodes) == 0:
-            print("WARNING: End of the Line")
+            print("WARNING: End of the Line\n")
             return None
         
         for x in range(len(adjacent_nodes)):
@@ -112,3 +112,11 @@ class Pathfinder:
             if current_node == None:
                 unvisited_node = self.get_other_unvisited_nodes()
                 current_node = unvisited_node
+        
+        # print the final distances
+        print("\n==================================\n")
+        self.print_final_distances(src)
+    
+    def print_final_distances(self, src):
+        for dist in range(len(self.nodes)):
+            print("Shortest Distance from", chr(src + 97), "to", chr(dist + 97), "=", self.nodes[dist][1])
